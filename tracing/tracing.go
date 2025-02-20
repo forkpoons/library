@@ -5,8 +5,8 @@ import (
 	"io"
 	"sync"
 
-	"github.com/ItemCloudShopping/library/yamlenv"
-	"github.com/ItemCloudShopping/library/zerohook"
+	"github.com/forkpoons/library/yamlenv"
+	"github.com/forkpoonsg/library/zerohook"
 	"github.com/opentracing/opentracing-go"
 	jaeger "github.com/uber/jaeger-client-go"
 	traceconfig "github.com/uber/jaeger-client-go/config"

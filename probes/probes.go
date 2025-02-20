@@ -3,7 +3,7 @@ package probes
 import (
 	"context"
 	"fmt"
-	"github.com/ItemCloudShopping/library/yamlenv"
+	"github.com/forkpoons/library/yamlenv"
 	"net/http"
 	"time"
 )
