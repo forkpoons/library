@@ -1,4 +1,4 @@
-module github.com/ItemCloudShopping/library
+module github.com/forkpoons/library
 
 go 1.22
 
