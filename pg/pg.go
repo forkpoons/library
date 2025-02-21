@@ -2,7 +2,6 @@ package pg
 
 import (
 	"context"
-	"fmt"
 	"github.com/forkpoons/library/yamlenv"
 	"sync"
 
@@ -37,7 +36,7 @@ func NewPG(
 			log.Error().Err(err).Send()
 			return
 		}
-		fmt.Printf("Настройки пула: %+v\n", cfg)
+
 		cfg.ConnConfig.Tracer = &myQueryTracer{
 			log: log,
 		}
@@ -51,7 +50,7 @@ func NewPG(
 
 		err = checkDBConnection(ctx, db, log)
 		if err != nil {
-			err = errors.Wrap(err, "database connection check failed")
+			err = errors.Wrap(err, pgxpool.Config{}.ConnConfig.Host)
 			log.Error().Err(err).Send()
 			return
 		}
