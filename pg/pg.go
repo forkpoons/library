@@ -2,6 +2,7 @@ package pg
 
 import (
 	"context"
+	"fmt"
 	"github.com/forkpoons/library/yamlenv"
 	"sync"
 
@@ -14,12 +15,12 @@ import (
 type PostgresConfig struct {
 	Conn *yamlenv.Env[string] `yaml:"conn"`
 }
-type postgres struct {
+type Postgres struct {
 	db *pgxpool.Pool
 }
 
 var (
-	pgInstance *postgres
+	pgInstance *Postgres
 	pgOnce     sync.Once
 )
 
@@ -27,7 +28,7 @@ func NewPG(
 	ctx context.Context,
 	conn string,
 	log zerolog.Logger,
-) (*postgres, error) {
+) (*Postgres, error) {
 	var err error
 	pgOnce.Do(func() {
 		cfg, parseErr := pgxpool.ParseConfig(conn)
@@ -36,7 +37,7 @@ func NewPG(
 			log.Error().Err(err).Send()
 			return
 		}
-
+		fmt.Printf("Настройки пула: %+v\n", cfg)
 		cfg.ConnConfig.Tracer = &myQueryTracer{
 			log: log,
 		}
@@ -55,7 +56,7 @@ func NewPG(
 			return
 		}
 
-		pgInstance = &postgres{db}
+		pgInstance = &Postgres{db}
 	})
 
 	if err != nil {
@@ -78,11 +79,11 @@ func checkDBConnection(
 	return nil
 }
 
-func (pg *postgres) Close() {
+func (pg *Postgres) Close() {
 	pg.db.Close()
 }
 
-func (pg *postgres) Pool() *pgxpool.Pool {
+func (pg *Postgres) Pool() *pgxpool.Pool {
 	return pg.db
 }
 
